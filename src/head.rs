@@ -22,9 +22,14 @@ pub fn get_last_commit_id(path: String) -> String {
  * # Example
  * last commit id, commit id, author, date, message
  * ```
+ * 848a86c39afbd6dac9cedde748b1b22ef69d68e9 d22917d93790153376221a30c81fd9533bf885ac apple <apple.mangoooo97@gmail.com> 1708735321 +0900	commit:
  * ```
  */
 pub fn create_head_message(last_commit_id: String, commit_id: String) -> String {
+    let email = "applemango@example.com";
+    let name = "applemango";
+    let time = "1708735321 +0900";
+    format!("{} {} {} <{}> {}	commit:\n", last_commit_id, commit_id, name, email, time)
 }
 
 pub fn write_head(path: String, ids: Vec<String>) {
@@ -51,6 +56,10 @@ pub fn add_head_backslash(path: String) {
     }
     head.push_str("\n");
     std::fs::write(Path::new(&path), head).unwrap();
+}
+
+pub fn update_heads_ref(path: String, last_commit_id: String) {
+    std::fs::write(Path::new(&path), format!("{}\n", last_commit_id)).unwrap();
 }
 
 pub fn append_head_core(path: String, last_commit_id: String, ids: Vec<String>) {

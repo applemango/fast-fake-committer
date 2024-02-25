@@ -56,21 +56,31 @@ pub fn create_path(base: String, hash: String) -> String {
     p
 }
 
-pub fn create_header(tree: String, parent: String) -> String {
-    let author = "apple <apple.mangoooo97@gmail.com> 1708735321 +0900".to_string();
-    let committer = "apple <apple.mangoooo97@gmail.com> 1708735321 +0900".to_string();
-    let f = format!("commit 216\0tree {}\nparent {}\nauthor {}\ncommitter {}\n\n", tree, parent, author, committer);
+pub fn create_base_header(tree: String, parent: String) -> String {
+    let email = "applemango@example.com";
+    let name = "applemango";
+    let time = "1708735321 +0900";
+    let author = format!("{} <{}> {}", name, email, time);
+    let committer = author.clone();
+    let f = format!("tree {}\nparent {}\nauthor {}\ncommitter {}\n\n", tree, parent, author, committer);
     f
 }
 
-pub fn commit_empty(tree: String, parent: String) {
+pub fn create_header(tree: String, parent: String) -> String {
+    let header = create_base_header(tree, parent);
+    let bytes = header.as_bytes().len();
+    let f = format!("commit {}\0{}", bytes, header);
+    f
+}
+
+pub fn commit_empty(path: String, tree: String, parent: String) -> String {
     let header = create_header(tree, parent);
     let hash = generate_hash("".to_string(), header.clone());
-    println!("{}", hash);
 
     let bytes = zlib_deflect(header.as_bytes());
 
-    write_bytes(create_path("./git".to_string(), hash), bytes);
+    write_bytes(create_path(path, hash.clone()), bytes);
+    hash
 }
 
 pub fn read_commit(hash: String) -> String {
