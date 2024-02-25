@@ -1,6 +1,8 @@
 # About
 高速で空のCommitをするプログラムです
 
+[実際にこれを使用して生成されたリポジトリ](https://github.com/applemango/fake-24m-commits)
+
 > [!CAUTION]
 > 大量のCommitをすることは、利用規約で禁止されている行為ではありませんが、アカウントが停止されたりBanされる可能性があります
 
